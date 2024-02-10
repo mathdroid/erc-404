@@ -19,11 +19,15 @@ contract Erc404Test is Test {
         pandora = new ExampleERC404(name_, symbol_, decimals_, maxTotalSupplyNft_, initialOwner_, initialMintRecipient_);
     }
 
-    function test_sanity() public {
+    function test_initializeSimple() public {
         assertEq(pandora.name(), name_);
         assertEq(pandora.symbol(), symbol_);
         assertEq(pandora.decimals(), decimals_);
         assertEq(pandora.owner(), initialOwner_);
+
+        // initial balance is 100 ** decimals ERC20, but 0 NFT
+        // ExampleERC404.sol:L18
         assertEq(pandora.balanceOf(initialMintRecipient_), maxTotalSupplyNft_ * 10 ** decimals_);
+        assertEq(pandora.owned(initialMintRecipient_).length, 0);
     }
 }
